@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.next{
+    background-color: #FFB606 !important;
+    padding: 10px;
+    color: white!important;
+}
+.prev{
+    background-color: #FFB606 !important;
+    padding: 10px;
+    color: white!important;
+}
+
+
+
+.main {
+    .my-image {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+
+        .animation {
+            position: absolute;
+            color: white;
+            font-size: 70px;
+
+            span {
+                background-color: #FFB606;
+                padding: 0 10px;
+            }
+        }
+    }
+}
