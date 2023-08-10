@@ -109,7 +109,7 @@ function Footer() {
                     <div className="footer_contact_icon">
                       <img src="images/placeholder.svg" alt="https://www.flaticon.com/authors/lucy-g"/>
                     </div>
-                    {item.address}
+                    {item.location}
                   </li>
                   <li className="footer_contact_item">
                     <div className="footer_contact_icon">
@@ -122,7 +122,8 @@ function Footer() {
                       <img src="images/envelope.svg" alt="https://www.flaticon.com/authors/lucy-g"/>
                     </div>
                     <Link  className="__cf_email__"
-                      data-cfemail="89e1ece5e5e6c9eae6e4f9e8e7f0a7eae6e4">{item.email}
+                    target='_blank'
+                    to="mailto:huseyn__ceferov@outlook.com">{item.email}
                     </Link>
                   </li>
                 </ul>
@@ -136,27 +137,18 @@ function Footer() {
           <div className="footer_copyright">
             <span>
               Copyright &copy;
-              <script data-cfasync="false"
-                src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-              <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made
-              with <i className="fa fa-heart" aria-hidden="true"></i> by 
+              All rights reserved | This site is made
+              with <i className="fa fa-heart" aria-hidden="true"></i> by  
               <Link 
-                target="_blank">Colorlib
-                </Link>
+                to="https://www.linkedin.com/in/gusicafar/" target="_blank"> Huseyn Jafarov
+              </Link>
             </span>
-          </div>
-          <div className="footer_social ml-sm-auto">
-            <ul className="menu_social">
-              <li className="menu_social_item"><Link  ><i className="fab fa-pinterest"></i></Link></li>
-              <li className="menu_social_item"><Link  ><i className="fab fa-linkedin-in"></i></Link></li>
-              <li className="menu_social_item"><Link  ><i className="fab fa-instagram"></i></Link></li>
-              <li className="menu_social_item"><Link  ><i className="fab fa-facebook-f"></i></Link></li>
-              <li className="menu_social_item"><Link  ><i className="fab fa-twitter"></i></Link></li>
-            </ul>
           </div>
         </div>
       </div>
     </footer>
+   
+
     </>
   )
 }

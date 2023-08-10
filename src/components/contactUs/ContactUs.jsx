@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 
 function ContactUs() {
@@ -70,7 +71,7 @@ function ContactUs() {
                 {contactUs.map((blog, index) => ( 
                   <div key={index} className="col-lg-4">
                     <div className="about">
-                      <div className="about_title">Join Courses</div>
+                      <div className="about_title">{blog.title}</div>
                       <p className="about_text">{blog.description}</p>
                       <div className="contact_info">
                         <ul>
@@ -81,7 +82,7 @@ function ContactUs() {
                                 alt="https://www.flaticon.com/authors/lucy-g"
                               />
                             </div>
-                            Blvd Libertad, 34 m05200 Arévalo
+                            {blog.location}
                           </li>
                           <li className="contact_info_item">
                             <div className="contact_info_icon">
@@ -90,7 +91,7 @@ function ContactUs() {
                                 alt="https://www.flaticon.com/authors/lucy-g"
                               />
                             </div>
-                            0034 37483 2445 322
+                            {blog.phone}
                           </li>
                           <li className="contact_info_item">
                             <div className="contact_info_icon">
@@ -99,13 +100,13 @@ function ContactUs() {
                                 alt="https://www.flaticon.com/authors/lucy-g"
                               />
                             </div>
-                            <a
-                              href="/cdn-cgi/l/email-protection"
+                            <Link
                               className="__cf_email__"
-                              data-cfemail="c7afa2ababa887a4a8aab7a6a9bee9a4a8aa"
+                              to="mailto:huseyn__ceferov@outlook.com"
+                              _target="_blank"
                             >
-                              [email&#160;protected]
-                            </a>
+                               {blog.email}
+                            </Link>
                           </li>
                         </ul>
                       </div>

@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -141,6 +141,11 @@ function Register() {
                   >
                     Sign Up
                   </Button>
+                  <Grid item>
+                      <Link  to = "/Login" variant="body2">
+                        {"Have an account? Sign In"}
+                      </Link>
+                    </Grid>
 
                 </Box>
               </Box>

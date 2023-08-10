@@ -10,10 +10,14 @@ import News from './pages/news/News';
 import Login from './pages/account/Login';
 import Register from './pages/account/Register';
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/js/bootstrap.min.js';
+import 'font-awesome/css/font-awesome.min.css';
 import "./assets/style/style.css";
 import "./assets/style/general.css";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+
+
 AOS.init();
 
 function App() {
@@ -30,9 +34,10 @@ function App() {
         <Route path='/register' element={<Register/>}/>   
         <Route path='/login' element={<Login/>}/> 
 
-
       </Routes>
+
       <Footer />
+    
     </>
   );
 }
