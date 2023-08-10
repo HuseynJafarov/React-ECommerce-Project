@@ -1,9 +1,28 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
+import axios from 'axios'
 
 function Popular() {
+
+  const url = "https://localhost:7055";
+
+  const [carts, setCarts] = useState([]);
+
+  const getAllCarts = async () => {
+   try {
+    await axios.get(`${url}/api/Cart/GetAll`).then((res) => {
+      setCarts(res.data);
+    });
+   } catch (error) {
+    alert(error);
+   }
+  };
+
+  useEffect(() => {
+    getAllCarts();
+  }, []);
   return (
     <>
-            <div className="popular page_section">
+      <div className="popular page_section">
       <div className="container">
         <div className="row">
           <div className="col">
@@ -13,60 +32,25 @@ function Popular() {
           </div>
         </div>
         <div className="row course_boxes">
-
-          <div className="col-lg-4 course_box">
+          {carts.map((item,index) => (
+            <div key={index} className="col-lg-4 course_box">
             <div className="card">
-              <img className="card-img-top" src="images/course_1.jpg" alt="https://unsplash.com/@kellybrito"/>
+              <img className="card-img-top" src={`data:image/jpg;base64,${item.image}`} alt="https://unsplash.com/@kellybrito"/>
               <div className="card-body text-center">
-                <div className="card-title"><a href="courses.html">A complete guide to design</a></div>
-                <div className="card-text">Adobe Guide, Layes, Smart Objects etc...</div>
+                <div className="card-title"><a href="courses.html">{item.title}</a></div>
+                <div className="card-text">{item.description}</div>
               </div>
               <div className="price_box d-flex flex-row align-items-center">
                 <div className="course_author_image">
                   <img src="images/author.jpg" alt="https://unsplash.com/@mehdizadeh"/>
                 </div>
-                <div className="course_author_name">Michael Smith, <span>Author</span></div>
-                <div className="course_price d-flex flex-column align-items-center justify-content-center"><span>$29</span>
+                <div className="course_author_name">{item.authorName} <span>Author</span></div>
+                <div className="course_price d-flex flex-column align-items-center justify-content-center"><span>${item.price}</span>
                 </div>
               </div>
             </div>
           </div>
-
-          <div className="col-lg-4 course_box">
-            <div className="card">
-              <img className="card-img-top" src="images/course_2.jpg" alt="https://unsplash.com/@cikstefan"/>
-              <div className="card-body text-center">
-                <div className="card-title"><a href="courses.html">Beginners guide to HTML</a></div>
-                <div className="card-text">Adobe Guide, Layes, Smart Objects etc...</div>
-              </div>
-              <div className="price_box d-flex flex-row align-items-center">
-                <div className="course_author_image">
-                  <img src="images/author.jpg" alt="https://unsplash.com/@mehdizadeh"/>
-                </div>
-                <div className="course_author_name">Michael Smith, <span>Author</span></div>
-                <div className="course_price d-flex flex-column align-items-center justify-content-center"><span>$29</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-lg-4 course_box">
-            <div className="card">
-              <img className="card-img-top" src="images/course_3.jpg" alt="https://unsplash.com/@dsmacinnes"/>
-              <div className="card-body text-center">
-                <div className="card-title"><a href="courses.html">Advanced Photoshop</a></div>
-                <div className="card-text">Adobe Guide, Layes, Smart Objects etc...</div>
-              </div>
-              <div className="price_box d-flex flex-row align-items-center">
-                <div className="course_author_image">
-                  <img src="images/author.jpg" alt="https://unsplash.com/@mehdizadeh"/>
-                </div>
-                <div className="course_author_name">Michael Smith, <span>Author</span></div>
-                <div className="course_price d-flex flex-column align-items-center justify-content-center"><span>$29</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          ))};
         </div>
       </div>
     </div>

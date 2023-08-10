@@ -1,4 +1,7 @@
 import React from 'react'
+import { Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { SlBasket } from 'react-icons/sl';
 
 function Header() {
   return (
@@ -16,19 +19,28 @@ function Header() {
         <nav className="main_nav_container">
           <div className="main_nav">
             <ul className="main_nav_list">
-              <li className="main_nav_item"><a href="#">home</a></li>
-              <li className="main_nav_item"><a href="#">about us</a></li>
-              <li className="main_nav_item"><a href="courses.html">courses</a></li>
-              <li className="main_nav_item"><a href="elements.html">elements</a></li>
-              <li className="main_nav_item"><a href="news.html">news</a></li>
-              <li className="main_nav_item"><a href="contact.html">contact</a></li>
+              <li className="main_nav_item"><Link to="/">Home</Link></li>
+              <li className="main_nav_item"><Link to="/About">About us</Link></li>
+              <li className="main_nav_item"><Link to="/courses">Courses</Link></li>
+              <li className="main_nav_item"><Link to="/news">News</Link></li>
+              <li className="main_nav_item"><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
         </nav>
       </div>
       <div className="header_side d-flex flex-row justify-content-center align-items-center">
-        <img src="images/phone-call.svg" alt=""/>
-        <span>+43 4566 7788 2457</span>
+        <Dropdown>
+          <Dropdown.Toggle className='btn btn-light' id="dropdown-basic">
+            My Account
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item ><Link  to = "/login">Login</Link></Dropdown.Item>
+            <Dropdown.Item ><Link  to = "/register">Register</Link></Dropdown.Item>
+            <Dropdown.Item ><Link  to = "/logout">Logout</Link></Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+        <Link to="basket"><SlBasket className='basketIcon'/></Link>
       </div>
 
       <div className="hamburger_container">

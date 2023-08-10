@@ -1,9 +1,36 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
+import { Link } from 'react-router-dom';
+import axios from "axios";
+
 
 function Footer() {
+  const url = "https://localhost:7055";
+
+  const [contact, setContact] = useState([]);
+  const [setting, setSetting] = useState([]);
+
+  const getAllContact = async () => {
+    try {
+      await axios.get(`${url}/api/Contact/GetAll`).then((res) => {
+        setContact(res.data);
+      });
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const getAllSetting = async () => {
+    await axios.get(`${url}/api/Setting/GetAll`).then((res) => {
+      setSetting(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getAllSetting();getAllContact();
+  }, []);
   return (
     <>
-          <footer className="footer">
+      <footer className="footer">
       <div className="container">
 
         <div className="newsletter">
@@ -34,26 +61,28 @@ function Footer() {
 
         <div className="footer_content">
           <div className="row">
-            <div className="col-lg-3 footer_col">
+          {setting.map((item,index) => (
+            <div key={index} className="col-lg-3 footer_col">
               <div className="logo_container">
                 <div className="logo">
                   <img src="images/logo.png" alt=""/>
-                  <span>course</span>
+                  <span>{item.siteName}</span>
                 </div>
               </div>
-              <p className="footer_about_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla, vitae tempor
-                nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum, tempor lacus.</p>
+              <p className="footer_about_text">{item.description}</p>
             </div>
+          ))}
+          
 
             <div className="col-lg-3 footer_col">
               <div className="footer_column_title">Menu</div>
               <div className="footer_column_content">
                 <ul>
-                  <li className="footer_list_item"><a href="#">Home</a></li>
-                  <li className="footer_list_item"><a href="#">About Us</a></li>
-                  <li className="footer_list_item"><a href="courses.html">Courses</a></li>
-                  <li className="footer_list_item"><a href="news.html">News</a></li>
-                  <li className="footer_list_item"><a href="contact.html">Contact</a></li>
+                  <li className="footer_list_item"><Link to="/">Home</Link></li>
+                  <li className="footer_list_item"><Link to="/about">About Us</Link></li>
+                  <li className="footer_list_item"><Link to="/courses">Courses</Link></li>
+                  <li className="footer_list_item"><Link to="/news">News</Link></li>
+                  <li className="footer_list_item"><Link to="/contact">Contact</Link></li>
                 </ul>
               </div>
             </div>
@@ -62,39 +91,43 @@ function Footer() {
               <div className="footer_column_title">Usefull Links</div>
               <div className="footer_column_content">
                 <ul>
-                  <li className="footer_list_item"><a href="#">Testimonials</a></li>
-                  <li className="footer_list_item"><a href="#">FAQ</a></li>
-                  <li className="footer_list_item"><a href="#">Community</a></li>
-                  <li className="footer_list_item"><a href="#">Campus Pictures</a></li>
-                  <li className="footer_list_item"><a href="#">Tuitions</a></li>
+                  <li className="footer_list_item"><Link  >Testimonials</Link></li>
+                  <li className="footer_list_item"><Link  >FAQ</Link></li>
+                  <li className="footer_list_item"><Link  >Community</Link></li>
+                  <li className="footer_list_item"><Link  >Campus Pictures</Link></li>
+                  <li className="footer_list_item"><Link  >Tuitions</Link></li>
                 </ul>
               </div>
             </div>
 
             <div className="col-lg-3 footer_col">
               <div className="footer_column_title">Contact</div>
-              <div className="footer_column_content">
+              {contact.map((item,index) => (
+              <div key={index} className="footer_column_content">
                 <ul>
                   <li className="footer_contact_item">
                     <div className="footer_contact_icon">
                       <img src="images/placeholder.svg" alt="https://www.flaticon.com/authors/lucy-g"/>
                     </div>
-                    Blvd Libertad, 34 m05200 Arévalo
+                    {item.address}
                   </li>
                   <li className="footer_contact_item">
                     <div className="footer_contact_icon">
                       <img src="images/smartphone.svg" alt="https://www.flaticon.com/authors/lucy-g"/>
                     </div>
-                    0034 37483 2445 322
+                    {item.phone}
                   </li>
                   <li className="footer_contact_item">
                     <div className="footer_contact_icon">
                       <img src="images/envelope.svg" alt="https://www.flaticon.com/authors/lucy-g"/>
-                    </div><a href="https://preview.colorlib.com/cdn-cgi/l/email-protection" className="__cf_email__"
-                      data-cfemail="89e1ece5e5e6c9eae6e4f9e8e7f0a7eae6e4">[email&#160;protected]</a>
+                    </div>
+                    <Link  className="__cf_email__"
+                      data-cfemail="89e1ece5e5e6c9eae6e4f9e8e7f0a7eae6e4">{item.email}
+                    </Link>
                   </li>
                 </ul>
               </div>
+              ))}
             </div>
           </div>
         </div>
@@ -106,17 +139,19 @@ function Footer() {
               <script data-cfasync="false"
                 src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
               <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made
-              with <i className="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com/"
-                target="_blank">Colorlib</a>
+              with <i className="fa fa-heart" aria-hidden="true"></i> by 
+              <Link 
+                target="_blank">Colorlib
+                </Link>
             </span>
           </div>
           <div className="footer_social ml-sm-auto">
             <ul className="menu_social">
-              <li className="menu_social_item"><a href="#"><i className="fab fa-pinterest"></i></a></li>
-              <li className="menu_social_item"><a href="#"><i className="fab fa-linkedin-in"></i></a></li>
-              <li className="menu_social_item"><a href="#"><i className="fab fa-instagram"></i></a></li>
-              <li className="menu_social_item"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-              <li className="menu_social_item"><a href="#"><i className="fab fa-twitter"></i></a></li>
+              <li className="menu_social_item"><Link  ><i className="fab fa-pinterest"></i></Link></li>
+              <li className="menu_social_item"><Link  ><i className="fab fa-linkedin-in"></i></Link></li>
+              <li className="menu_social_item"><Link  ><i className="fab fa-instagram"></i></Link></li>
+              <li className="menu_social_item"><Link  ><i className="fab fa-facebook-f"></i></Link></li>
+              <li className="menu_social_item"><Link  ><i className="fab fa-twitter"></i></Link></li>
             </ul>
           </div>
         </div>

@@ -3,7 +3,7 @@ import React from "react";
 function SingUp() {
   return (
  <>
-       <div className="register">
+    <div className="register">
       <div className="container-fluid">
         <div className="row row-eq-height">
           <div className="col-lg-6 nopadding">
@@ -15,7 +15,7 @@ function SingUp() {
                 <p className="register_text">In aliquam, augue a gravida rutrum, ante nisl fermentum nulla, vitae tempor
                   nisl ligula vel nunc. Proin quis mi malesuada, finibus tortor fermentum. Aliquam, augue a gravida
                   rutrum, ante nisl fermentum nulla, vitae tempo.</p>
-                <div className="button button_1 register_button mx-auto trans_200"><a href="#">register now</a></div>
+                <div className="button button_1 register_button mx-auto trans_200"><a  >register now</a></div>
               </div>
             </div>
           </div>

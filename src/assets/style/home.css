@@ -196,6 +196,7 @@
 }
 
 .course_author_name span {
+	width: 50%;
 	color: #a5a5a5;
 }
 
@@ -214,52 +215,7 @@
 }
 
 
-.register {
-	width: 100%;
-}
 
-.register_section {
-	width: 100%;
-	background: #ffb606;
-	padding-top: 156px;
-	padding-bottom: 161px;
-}
-
-.register_content {
-	width: 522px;
-}
-
-.register_title {
-	color: #FFFFFF;
-	margin-bottom: 16px;
-	line-height: 1.63;
-}
-
-.register_title:last-child {
-	margin-bottom: 0px;
-}
-
-.register_title span {
-	color: #1a1a1a;
-}
-
-.register_text {
-	color: #FFFFFF;
-	font-weight: 500;
-	margin-top: 32px;
-	padding-left: 25px;
-	padding-right: 25px;
-	margin-bottom: 0px;
-}
-
-.register_button {
-	background: #1a1a1a;
-	margin-top: 65px;
-}
-
-.register_button a {
-	color: #FFFFFF;
-}
 
 
 .search_section {
