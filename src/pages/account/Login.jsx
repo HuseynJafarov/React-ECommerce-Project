@@ -1,5 +1,8 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from "react";
+import { useNavigate, Link } from 'react-router-dom';
+import { JwtContext } from '../../Context/Context';
+import axios from "axios";
+import Swal from "sweetalert2";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,19 +16,69 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-
-
-
 const theme = createTheme();
 
 function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const navigate = useNavigate();
+
+  const url = "https://localhost:7055";
+
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  
+  const {ParseJwt} = useContext(JwtContext);
+  
+  const SignIn = async (e) => {
+    e.preventDefault();
+
+    const exsistUser = {
+      email: Email,
+      password: Password
+    };
+
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(exsistUser)) {
+      formData.append(key, value);
+    };
+
+    await axios.post(`${url}/api/Account/Login`, formData, {
+    
+    })
+      .then((res) => {
+        if (res.status === 200 || res.data.status === "success") {
+          let userDecode = ParseJwt(res.data)[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ];
+          if (userDecode === "Member") {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'You are not authorized to access this page',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            } else {
+            localStorage.setItem("token", JSON.stringify(res.data));
+            console.log(res.data)
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Signed in succesfully!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            navigate('/');
+          }
+        } else {
+          Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: 'Email or password is wrong!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      })
   };
   return (
     <>
@@ -74,16 +127,18 @@ function Login() {
                   <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                  Sign in
+                  SignIn
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                <Box component="form" noValidate onSubmit={SignIn} sx={{ mt: 1 }}>
                   <TextField
                     margin="normal"
                     required
                     fullWidth
-                    id="usrname"
-                    label="Username"
-                    name="username"
+                    id="email"
+                    label="Email"
+                    name="email"
+                    value={Email}
+                    onChange={(e) => setEmail(e.target.value)}
                     autoComplete="off"
                   />
                   <TextField
@@ -94,6 +149,8 @@ function Login() {
                     label="Password"
                     name="password"
                     type="password"
+                    value={Password}
+                    onChange={(e) => setPassword(e.target.value)}
                     autoComplete="off"
                   />
                   <FormControlLabel
@@ -109,25 +166,24 @@ function Login() {
                   >
                     Sign In
                   </Button>
-                  <Grid container>
+                  {/* <Grid container>
                     <Grid item xs>
-                      <Link  to = "/login" variant="body2">
+                      <Link to="/login" variant="body2">
                         Forgot password?
                       </Link>
                     </Grid>
                     <Grid item>
-                      <Link  to = "/register" variant="body2">
+                      <Link to="/register" variant="body2">
                         {"Don't have an account? Sign Up"}
                       </Link>
                     </Grid>
-                  </Grid>
+                  </Grid> */}
                 </Box>
               </Box>
             </Grid>
           </Grid>
         </ThemeProvider>
       </div>
-      
     </>
   );
 }

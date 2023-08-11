@@ -44,8 +44,8 @@ function Student() {
                 // prevIcon={directButtons("d-none")}
                 >
                   {students.map((student, i) => (
-                    <Carousel.Item>
-                      <div key={i} className="owl-item">
+                    <Carousel.Item key={i}>
+                      <div className="owl-item">
                         <div className="testimonials_item text-center">
                           <div className="quote">“</div>
                           <p className="testimonials_text">

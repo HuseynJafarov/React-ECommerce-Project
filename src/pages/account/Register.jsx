@@ -1,5 +1,7 @@
-import React from "react";
+import React,{useState} from "react";
 import { Link } from 'react-router-dom';
+import axios from "axios";
+import Swal from "sweetalert2";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,14 +17,55 @@ import '../../assets/style/account.css'
 const theme = createTheme();
 
 
-function Register() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+const Register = () => {
+
+  const url = 'https://localhost:7055';
+
+  const [FullName, setFullName] = useState("");
+  const [Username, setUsername] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const [ConfirmPassword, setConfirmPassword] = useState("");
+
+  const newUser = {
+    fullname: FullName,
+    username: Username,
+    email: Email,
+    password: Password,
+    confirmPassword: ConfirmPassword
+  };
+
+  const Submit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(newUser)) {
+      formData.append(key, value);
+    };
+
+    await axios.post(`${url}/api/Account/Register`, formData, {
+      headers: {
+        Accept: "*/*"
+      }
+    })
+      .then((res) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Please Check Your Email',
+          showConfirmButton: false,
+          timer: 3000
+        });
+        console.log(res);
+      })
+      .catch((err) => {
+        if (err.response && err.response.data && err.response.data.errors) {
+          const errors = err.response.data.errors;
+          const errorMessage = errors.join("\n");
+          alert("Validation Errors:\n" + errorMessage);
+        }
+        console.log(err);
+      });
   };
   
 
@@ -79,7 +122,7 @@ function Register() {
                 <Typography component="h1" variant="h5">
                   Sign up
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                <Box component="form" noValidate onSubmit={Submit} sx={{ mt: 1 }}>
                   <TextField
                     margin="normal"
                     required
@@ -89,6 +132,8 @@ function Register() {
                     name="fullname"
                     type="text"
                     autoComplete="off"
+                    value={FullName}
+                    onChange={(e) => setFullName(e.target.value)}
 
                   />
                   <TextField
@@ -100,6 +145,8 @@ function Register() {
                     name="email"
                     type="email"
                     autoComplete="off"
+                    value={Email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                   <TextField
                     margin="normal"
@@ -110,6 +157,8 @@ function Register() {
                     name="username"
                     type="text"
                     autoComplete="off"
+                    value={Username}
+                    onChange={(e) => setUsername(e.target.value)}
                   />
                   <TextField
                     margin="normal"
@@ -120,6 +169,8 @@ function Register() {
                     name="password"
                     type="password"
                     autoComplete="off"
+                    value={Password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <TextField
                     margin="normal"
@@ -130,6 +181,8 @@ function Register() {
                     name="confirmPassword"
                     type="password"
                     autoComplete="off"
+                    value={ConfirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
 
                   <Button
@@ -141,11 +194,11 @@ function Register() {
                   >
                     Sign Up
                   </Button>
-                  <Grid item>
+                  {/* <Grid item>
                       <Link  to = "/Login" variant="body2">
                         {"Have an account? Sign In"}
                       </Link>
-                    </Grid>
+                    </Grid> */}
 
                 </Box>
               </Box>

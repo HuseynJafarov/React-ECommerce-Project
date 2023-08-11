@@ -90,13 +90,13 @@ function Footer() {
             <div className="col-lg-3 footer_col">
               <div className="footer_column_title">Usefull Links</div>
               <div className="footer_column_content">
-                <ul>
-                  <li className="footer_list_item"><Link  >Testimonials</Link></li>
+                {/* <ul>
+                  <li className="footer_list_item"><Link >Testimonials</Link></li>
                   <li className="footer_list_item"><Link  >FAQ</Link></li>
                   <li className="footer_list_item"><Link  >Community</Link></li>
                   <li className="footer_list_item"><Link  >Campus Pictures</Link></li>
                   <li className="footer_list_item"><Link  >Tuitions</Link></li>
-                </ul>
+                </ul> */}
               </div>
             </div>
 
