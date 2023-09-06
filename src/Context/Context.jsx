@@ -1,9 +1,9 @@
-import React, { createContext } from 'react';
+import React,{createContext } from 'react';
 
-const JwtContext = createContext();
+const JwtContext =  createContext();
 
 const ParseJwt = (token) => {
-    var base64Url = token.split(".")[1];
+    var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     var jsonPayload = decodeURIComponent(
         atob(base64)
@@ -14,6 +14,6 @@ const ParseJwt = (token) => {
             .join("")
     );
     return JSON.parse(jsonPayload);
-};
+}
 
-export { ParseJwt, JwtContext };
+export {ParseJwt,JwtContext};

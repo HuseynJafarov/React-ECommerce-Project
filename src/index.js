@@ -5,13 +5,14 @@ import { BrowserRouter } from "react-router-dom";
 import { JwtContext,ParseJwt } from './Context/Context';
 
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <JwtContext.Provider value = {{ParseJwt}}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </JwtContext.Provider>
   </React.StrictMode>
 );

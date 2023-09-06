@@ -1,9 +1,12 @@
 import React from "react";
 import Popular from "../../components/popular/Popular";
+import  Navbar from "../../components/layout/Header";
 
 function Courses() {
+  const [basketcount, setbasketcount] = React.useState(0);
   return (
     <>
+    <Navbar basketcount={basketcount}  />
       <div className="home">
         <div className="home_background_container prlx_parent">
           <div
@@ -17,7 +20,7 @@ background: `url(${process.env.PUBLIC_URL}/images/courses_background.jpg)`,
           <h1>Courses</h1>
         </div>
       </div>
-      <Popular />
+      <Popular setbasketcount={setbasketcount}/>
     </>
   );
 }

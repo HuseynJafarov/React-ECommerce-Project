@@ -1,8 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { JwtContext } from '../../Context/Context';
-import axios from "axios";
-import Swal from "sweetalert2";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,89 +10,118 @@ import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import FormGroup from '@mui/material/FormGroup';
+import Alert  from '@mui/material/Alert';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import "../../assets/scss/login.scss";
 
 const theme = createTheme();
 
-function Login() {
+const Login = () => {
+
   const navigate = useNavigate();
 
-  const url = "https://localhost:7055";
+  const url = 'https://localhost:7055';
 
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
-  
+  const [invalid, setInvalid] = useState(false);
+  const [invalidMessage, setInvalidMessage] = useState([]);
+
+
+
   const {ParseJwt} = useContext(JwtContext);
-  
+
+  const exsistUser = {
+    email: Email,
+    password: Password
+  };
+
   const SignIn = async (e) => {
     e.preventDefault();
-
-    const exsistUser = {
-      email: Email,
-      password: Password
-    };
 
     const formData = new FormData();
     for (const [key, value] of Object.entries(exsistUser)) {
       formData.append(key, value);
     };
 
-    await axios.post(`${url}/api/Account/Login`, formData, {
-    
-    })
-      .then((res) => {
-        if (res.status === 200 || res.data.status === "success") {
-          let userDecode = ParseJwt(res.data)[
-            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-          ];
-          if (userDecode === "Member") {
-            Swal.fire({
-              position: 'top-end',
-              icon: 'error',
-              title: 'You are not authorized to access this page',
-              showConfirmButton: false,
-              timer: 1500
-            });
-            } else {
-            localStorage.setItem("token", JSON.stringify(res.data));
-            console.log(res.data)
-            Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'Signed in succesfully!',
-              showConfirmButton: false,
-              timer: 1500
-            });
-            navigate('/');
+    try { 
+        await axios.post(`${url}/api/Account/Login`, formData, {
+          headers: {
+            Accept: "*/*"
           }
-        } else {
-          Swal.fire({
-            position: 'top-center',
-            icon: 'error',
-            title: 'Email or password is wrong!',
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-      })
+        })
+          .then((res) => {
+
+            if (res.data.errors !== null) {
+              setInvalid(true)
+              setInvalidMessage(res.data.errors)
+          }
+            
+
+            if (res.data.statusMessage === "Success") {
+              let userDecode = ParseJwt(res.data.token)[
+                "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+              ];
+                if (userDecode === "SuperAdmin" || userDecode === "Admin") {
+                  Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'You are not authorized to access this page',
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                } else {
+                localStorage.setItem("token", JSON.stringify(res.data.token));
+                console.log(res.data)
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Signed in succesfully!',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+                navigate('/');
+                window.location.reload()
+              }
+            } else {
+              Swal.fire({
+                position: 'top-center',
+                icon: 'error',
+                title: 'Email or password is wrong!',
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+          })
+    } catch (error) {
+      const errors = error.response.data;
+      if (errors.length > 0) {
+          setInvalid(true)
+          setInvalidMessage(errors)
+      }
+    }
   };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value)
+    setInvalid(false)
+}
+const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+    setInvalid(false)
+}
+
+ 
+
   return (
     <>
-      <div className="home">
-        <div className="home_background_container prlx_parent">
-          <div
-            className="home_background prlx"
-            style={{
-              background: `url(${process.env.PUBLIC_URL}/images/courses_background.jpg)`,
-            }}
-          ></div>
-        </div>
-        <div className="home_content">
-          <h1>Login</h1>
-        </div>
-      </div>
+     
+     
       <div className='container my-5'>
         <ThemeProvider theme={theme}>
           <Grid container component="main" sx={{ height: '100vh' }}>
@@ -127,9 +154,17 @@ function Login() {
                   <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                  SignIn
+                  Login
                 </Typography>
-                <Box component="form" noValidate onSubmit={SignIn} sx={{ mt: 1 }}>
+                <Box component="form" noValidate onSubmit={(e) => SignIn(e)} sx={{ mt: 1 }}>
+
+                <FormGroup style={{ marginBottom: "20px" }}>
+                            {
+                                invalid && (
+                                    <Alert severity="error">{invalidMessage}</Alert>
+                                )
+                            }
+                </FormGroup>
                   <TextField
                     margin="normal"
                     required
@@ -137,9 +172,9 @@ function Login() {
                     id="email"
                     label="Email"
                     name="email"
+                    // autoComplete="off"
                     value={Email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="off"
+                    onChange={handleEmailChange}
                   />
                   <TextField
                     margin="normal"
@@ -149,9 +184,9 @@ function Login() {
                     label="Password"
                     name="password"
                     type="password"
+                    // autoComplete="off"
                     value={Password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="off"
+                    onChange={handlePasswordChange}
                   />
                   <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
@@ -166,26 +201,27 @@ function Login() {
                   >
                     Sign In
                   </Button>
-                  {/* <Grid container>
+                  <Grid container>
                     <Grid item xs>
-                      <Link to="/login" variant="body2">
-                        Forgot password?
+                      <Link to="/ForgotPassword" variant="body2">
+                        {"Forgot password?"}
                       </Link>
                     </Grid>
                     <Grid item>
-                      <Link to="/register" variant="body2">
+                      <Link to="/Register" variant="body2">
                         {"Don't have an account? Sign Up"}
                       </Link>
                     </Grid>
-                  </Grid> */}
+                  </Grid>
                 </Box>
               </Box>
             </Grid>
           </Grid>
         </ThemeProvider>
       </div>
+     
     </>
+
   );
 }
-
 export default Login;

@@ -9,6 +9,7 @@ import Courses from './pages/courses/Courses';
 import News from './pages/news/News';
 import Login from './pages/account/Login';
 import Register from './pages/account/Register';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/js/bootstrap.min.js';
 import 'font-awesome/css/font-awesome.min.css';
@@ -21,6 +22,7 @@ import 'aos/dist/aos.css';
 AOS.init();
 
 function App() {
+
   return ( 
     <>
       <Header />
@@ -28,7 +30,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path='/contact' element={<Contact/>}/>
-        <Route path='/courses' element={<Courses/>}/>
+        <Route path='/courses' element={<Courses/>} />
         <Route path='/news' element={<News/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>   
